@@ -2000,4 +2000,19 @@ function saveTask(){
 initFirebase();  // 啟動 Firebase 雲端同步
 const _loadResult = loadState();   // 從 localStorage 讀取存檔
 renderShop();
-renderTasks(
+renderTasks();
+renderTodayList();
+updateCoins();
+updateChestBadge();
+renderSkills();
+if(_loadResult==='newday') setTimeout(()=>checkNewDay(_loadResult), 600);
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
