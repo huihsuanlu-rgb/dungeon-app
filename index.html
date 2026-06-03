@@ -372,41 +372,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .confirm-row{display:flex;gap:10px}
 .confirm-yes{flex:1;padding:10px;background:#C84040;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;color:#fff;cursor:pointer}
 .confirm-no{flex:1;padding:10px;background:rgba(180,140,80,.12);border:1.5px solid rgba(180,140,80,.25);border-radius:10px;font-family:inherit;font-size:14px;color:var(--ink-mid);cursor:pointer}
-
-/* ── LEVEL UP ── */
-.lvup-btn{width:100%;padding:8px;margin-top:6px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;color:#4A2800;cursor:pointer;animation:lvup-pulse 1s ease-in-out infinite}
-@keyframes lvup-pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,200,0,.5)}50%{transform:scale(1.03);box-shadow:0 0 0 8px rgba(255,200,0,0)}}
-/* bling overlay */
-#ov-bling{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.bling-card{background:var(--paper);border-radius:24px;padding:32px 40px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3);animation:bling-pop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes bling-pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.bling-icon{font-size:60px;line-height:1.1;animation:spin-once .6s ease-out}
-@keyframes spin-once{from{transform:rotate(-20deg) scale(.8)}to{transform:rotate(0deg) scale(1)}}
-.bling-title{font-size:22px;font-weight:700;color:var(--ink);margin-top:8px}
-.bling-sub{font-size:15px;color:var(--ink-mid);margin-top:4px}
-.sparkle{position:fixed;pointer-events:none;font-size:20px;animation:sparkle-fly 1.2s ease-out forwards;z-index:10000}
-@keyframes sparkle-fly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.3)}}
-
-/* ── PARENT ADJUST ── */
-.adj-amt-btn{padding:6px 12px;border:1.5px solid rgba(180,140,80,.25);border-radius:10px;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-mid);cursor:pointer}
-.adj-amt-btn.on{background:var(--ink);color:var(--paper);border-color:transparent}
-/* real reward shop item */
-.rr-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(180,140,80,.12)}
-.rr-item:last-child{border-bottom:none}
-.rr-name{font-size:14px;font-weight:600;color:var(--ink)}
-.rr-price{font-size:13px;color:var(--ink-mid);margin-top:2px}
-.rr-buy-btn{padding:8px 16px;background:linear-gradient(135deg,#C8920A,#E8B020);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:#fff;cursor:pointer}
 </style>
-
-<!-- ══ BLING LEVEL UP OVERLAY ══ -->
-<div class="overlay hidden" id="ov-bling" onclick="closeBling()">
-  <div class="bling-card" onclick="event.stopPropagation()">
-    <div class="bling-icon" id="bling-icon">⭐</div>
-    <div class="bling-title" id="bling-title">技能升級！</div>
-    <div class="bling-sub" id="bling-sub">Lv2 達成！</div>
-    <button onclick="closeBling()" style="margin-top:18px;padding:10px 28px;background:var(--ink);border:none;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;color:var(--paper);cursor:pointer">太棒了！✨</button>
-  </div>
-</div>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
@@ -487,34 +453,83 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <button class="tab on" id="sk-dabo" onclick="setSkTab('dabo')">⚔️ 功課地下城</button>
     <button class="tab" id="sk-ebao" onclick="setSkTab('ebao')">🫧 泡泡地下城</button>
   </div>
-  <div id="sk-panel-dabo"></div>
-  <div id="sk-panel-ebao" class="hidden"></div>
-</div><!-- end p-skills -->
+  <div id="sk-panel-dabo">
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(61,107,68,.3)"><div class="b-liquid" style="height:45%;background:linear-gradient(to top,#2A5230,#4A8A52,#6AAA72)"></div><div class="b-blotch" style="background:#3D6B44"></div><div class="b-shine2"></div><div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:8px">✦</span></div></div></div>
+            <div class="b-lv" style="background:var(--eye-col)">Lv1</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">👁️ 精準之眼</div><div class="sk-desc">細心・正確・專注</div><div class="prog-bar"><div class="prog-fill" style="width:45%;background:linear-gradient(to right,var(--eye-col),#7AAA80)"></div></div><div class="prog-txt"><span>15 ⭐</span><span>距 Lv2 差 15 ⭐</span></div><div class="sk-ttl" style="background:rgba(61,107,68,.08);color:var(--eye-col);border-color:rgba(61,107,68,.25)">🔷 鷹眼學徒</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(107,90,174,.3)"><div class="b-liquid" style="height:70%;background:linear-gradient(to top,#4A3A8E,#7A68BE,#9A88DE)"></div><div class="b-blotch" style="background:#6B5AAE"></div><div class="b-shine2"></div><div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:9px">✦</span><span class="b-star" style="color:#fff;font-size:8px">✦</span></div></div></div>
+            <div class="b-lv" style="background:var(--wind-col)">Lv2</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">⚡ 疾風之手</div><div class="sk-desc">速度・效率・行動力</div><div class="prog-bar"><div class="prog-fill" style="width:70%;background:linear-gradient(to right,var(--wind-col),#9A88CE)"></div></div><div class="prog-txt"><span>42 ⭐</span><span>距 Lv3 差 18 ⭐</span></div><div class="sk-ttl" style="background:rgba(107,90,174,.08);color:var(--wind-col);border-color:rgba(107,90,174,.25)">⚡ 迅影冒險者</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(212,168,32,.3)"><div class="b-liquid" style="height:30%;background:linear-gradient(to top,#9A7008,#C8A020,#E8C040)"></div><div class="b-blotch" style="background:#D4A820"></div><div class="b-shine2"></div><div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:9px">✦</span></div></div></div>
+            <div class="b-lv" style="background:var(--craft-col)">Lv1</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">✏️ 工匠之筆</div><div class="sk-desc">工整・耐心・穩定</div><div class="prog-bar"><div class="prog-fill" style="width:30%;background:linear-gradient(to right,var(--craft-col),#E8C860)"></div></div><div class="prog-txt"><span>10 ⭐</span><span>距 Lv2 差 20 ⭐</span></div><div class="sk-ttl" style="background:rgba(212,168,32,.08);color:var(--craft-col);border-color:rgba(212,168,32,.3)">🔨 小小學徒</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sk-panel-ebao" class="hidden">
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(200,64,64,.28)"><div class="b-liquid" style="height:55%;background:linear-gradient(to top,#b04040,#e88888)"></div><div class="b-blotch" style="background:#C84040"></div><div class="b-shine2"></div>
+              <!-- Heart shape via SVG overlay -->
+              <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 64 66" preserveAspectRatio="none">
+                <path d="M32 54 C32 54 6 38 6 22 C6 12 14 6 22 6 C27 6 31 10 32 14 C33 10 37 6 42 6 C50 6 58 12 58 22 C58 38 32 54 32 54Z" fill="rgba(255,255,255,.08)" stroke="rgba(200,64,64,.2)" stroke-width="1"/>
+              </svg>
+              <div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:9px">✦</span></div></div></div>
+            <div class="b-lv" style="background:var(--heart-col)">Lv1</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">❤️ 新手之心</div><div class="sk-desc">學習・勇氣・再嘗試</div><div class="prog-bar"><div class="prog-fill" style="width:55%;background:linear-gradient(to right,var(--heart-col),#E89898)"></div></div><div class="prog-txt"><span>18 ⭐</span><span>距 Lv2 差 12 ⭐</span></div><div class="sk-ttl" style="background:rgba(200,64,64,.08);color:var(--heart-col);border-color:rgba(200,64,64,.25)">❤️ 勇氣學徒</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(136,120,192,.28)"><div class="b-liquid" style="height:80%;background:linear-gradient(to top,#5848A8,#8878C0,#AAA0D8)"></div><div class="b-blotch" style="background:#8878C0"></div><div class="b-shine2"></div><div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:8px">✦</span><span class="b-star" style="color:#fff;font-size:9px">✦</span></div></div></div>
+            <div class="b-lv" style="background:var(--bubble-col)">Lv2</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">🫧 靜默之泡</div><div class="sk-desc">安靜・等待・控制</div><div class="prog-bar"><div class="prog-fill" style="width:80%;background:linear-gradient(to right,var(--bubble-col),#B0A8D8)"></div></div><div class="prog-txt"><span>48 ⭐</span><span>距 Lv3 差 12 ⭐</span></div><div class="sk-ttl" style="background:rgba(136,120,192,.08);color:var(--bubble-col);border-color:rgba(136,120,192,.25)">🫧 泡泡魔導士</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="sk-row">
+          <div class="bottle-wrap">
+            <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div><div class="b-body2" style="border-color:rgba(212,184,32,.28)"><div class="b-liquid" style="height:35%;background:linear-gradient(to top,#9A8008,#C8A820,#E8D040)"></div><div class="b-blotch" style="background:#D4B820"></div><div class="b-shine2"></div><div class="b-stars"><span class="b-star" style="color:#fff">✦</span><span class="b-star" style="color:#fff;font-size:9px">✦</span></div></div></div>
+            <div class="b-lv" style="background:#A08010">Lv1</div>
+          </div>
+          <div class="sk-info"><div class="sk-name">🌈 創意之靈</div><div class="sk-desc">想像・創作・表達</div><div class="prog-bar"><div class="prog-fill" style="width:35%;background:linear-gradient(to right,var(--creative-col),#E8D870)"></div></div><div class="prog-txt"><span>12 ⭐</span><span>距 Lv2 差 18 ⭐</span></div><div class="sk-ttl" style="background:rgba(212,184,32,.08);color:#A08010;border-color:rgba(212,184,32,.28)">🌈 彩虹學徒</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ SHOP ══ -->
 <div class="page" id="p-shop">
   <div style="height:11px"></div>
   <div class="tabs">
-    <button class="tab on" id="sh-dabo"   onclick="setShopChar('dabo')">⚔️ 大寶</button>
-    <button class="tab"    id="sh-ebao"   onclick="setShopChar('ebao')">🫧 二寶</button>
-    <button class="tab"    id="sh-real"   onclick="setShopChar('real')">🎁 現實獎勵</button>
+    <button class="tab on" id="sh-dabo" onclick="setShopChar('dabo')">⚔️ 大寶的商店</button>
+    <button class="tab" id="sh-ebao" onclick="setShopChar('ebao')">🫧 二寶的商店</button>
   </div>
-  <div id="shop-real-panel" class="hidden" style="padding:8px 0">
-    <div class="sec">🎁 用金幣換現實獎勵</div>
-    <div style="display:flex;gap:7px;margin-bottom:12px">
-      <button class="char-pick-btn on" id="rr-dabo" onclick="setRealChar('dabo')">⚔️ 大寶 <span id="rr-dabo-coins"></span></button>
-      <button class="char-pick-btn"    id="rr-ebao" onclick="setRealChar('ebao')">🫧 二寶 <span id="rr-ebao-coins"></span></button>
-    </div>
-    <div id="real-reward-shop-list"></div>
-  </div>
-  <div id="shop-normal-panel">
   <div class="shop-hdr">
     <div style="font-size:14px;font-weight:600;color:var(--ink-mid)" id="shop-char-lbl">大寶的金幣</div>
     <div class="shop-coin"><span class="shop-coin-lbl">持有</span><span>🪙</span><span class="shop-coin-n" id="shop-coins">45</span></div>
   </div>
   <div class="eq-grid" id="shop-grid"><!-- rendered by JS --></div>
-
-  </div><!-- end shop-normal-panel -->
 </div>
 
 <!-- ══ CHEST ══ -->
@@ -580,9 +595,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       </div>
     </div>
     <div class="tabs">
-      <button class="tab on" id="pt-tasks"  onclick="setParentTab('tasks')">📋 任務</button>
-      <button class="tab"    id="pt-adjust" onclick="setParentTab('adjust')">⚙️ 調整</button>
-      <button class="tab"    id="pt-hist"   onclick="setParentTab('hist')">📜 紀錄</button>
+      <button class="tab on" id="pt-tasks" onclick="setParentTab('tasks')">📋 任務管理</button>
+      <button class="tab" id="pt-hist"   onclick="setParentTab('hist')">📜 歷史紀錄</button>
     </div>
     <!-- tasks panel -->
     <div id="pp-tasks">
@@ -592,35 +606,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       </div>
       <div id="parent-task-list"><!-- rendered --></div>
       <button class="add-task-btn" onclick="openTaskForm(null)">＋ 新增任務</button>
-    </div>
-    <!-- adjust panel -->
-    <div id="pp-adjust" class="hidden">
-      <div class="card" style="margin-top:10px">
-        <div class="sec">💰 金幣調整</div>
-        <div style="display:flex;gap:7px;margin-bottom:12px">
-          <button class="char-pick-btn on" id="adj-dabo" onclick="setAdjChar('dabo')">⚔️ 大寶</button>
-          <button class="char-pick-btn"    id="adj-ebao" onclick="setAdjChar('ebao')">🫧 二寶</button>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px">
-          <button onclick="doAdjCoins(-_adjAmt)" style="width:44px;height:44px;border-radius:50%;border:2px solid #C84040;background:rgba(200,64,64,.08);font-size:20px;cursor:pointer;color:#C84040">－</button>
-          <div style="text-align:center">
-            <div style="font-size:26px;font-weight:700" id="adj-coin-display">0 🪙</div>
-            <div style="font-size:11px;color:var(--ink-light)" id="adj-char-lbl">大寶的金幣</div>
-          </div>
-          <button onclick="doAdjCoins(_adjAmt)" style="width:44px;height:44px;border-radius:50%;border:2px solid #4A7A52;background:rgba(74,122,82,.08);font-size:20px;cursor:pointer;color:#4A7A52">＋</button>
-        </div>
-        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
-          <button class="adj-amt-btn on" id="amt-1" onclick="setAdjAmt(1)">±1</button>
-          <button class="adj-amt-btn" id="amt-3" onclick="setAdjAmt(3)">±3</button>
-          <button class="adj-amt-btn" id="amt-5" onclick="setAdjAmt(5)">±5</button>
-          <button class="adj-amt-btn" id="amt-10" onclick="setAdjAmt(10)">±10</button>
-        </div>
-      </div>
-      <div class="card" style="margin-top:10px">
-        <div class="sec">🎁 現實獎勵管理</div>
-        <div id="real-reward-mgmt-list"></div>
-        <button class="add-task-btn" onclick="openRealRewardForm(null)" style="margin-top:8px">＋ 新增現實獎勵</button>
-      </div>
     </div>
     <!-- history panel -->
     <div id="pp-hist" class="hidden">
@@ -825,21 +810,19 @@ const POOL_ITEMS = ['疾風靴','護盾石','暖光燈籠','探索地圖','工�
 
 // ═══ SKILLS ═══
 const SKILLS = {
-  wind:     {name:'疾風之手', ico:'⚡',  char:'dabo', color:'var(--wind-col)',    hex:'#6B5AAE', desc:'速度・效率・行動力'},
-  eye:      {name:'精準之眼', ico:'👁️', char:'dabo', color:'var(--eye-col)',     hex:'#3D6B44', desc:'細心・正確・專注'},
-  craft:    {name:'工匠之筆', ico:'✏️', char:'dabo', color:'var(--craft-col)',   hex:'#D4A820', desc:'工整・耐心・穩定'},
-  heart:    {name:'新手之心', ico:'❤️', char:'ebao', color:'var(--heart-col)',   hex:'#C84040', desc:'學習・勇氣・再嘗試'},
-  bubble:   {name:'靜默之泡', ico:'🫧', char:'ebao', color:'var(--bubble-col)',  hex:'#8878C0', desc:'安靜・等待・控制'},
-  creative: {name:'創意之靈', ico:'🌈', char:'ebao', color:'var(--creative-col)',hex:'#C8A820', desc:'想像・創作・表達'},
+  wind:     {name:'疾風之手', ico:'⚡',  char:'dabo', color:'var(--wind-col)'},
+  eye:      {name:'精準之眼', ico:'👁️', char:'dabo', color:'var(--eye-col)'},
+  craft:    {name:'工匠之筆', ico:'✏️', char:'dabo', color:'var(--craft-col)'},
+  heart:    {name:'新手之心', ico:'❤️', char:'ebao', color:'var(--heart-col)'},
+  bubble:   {name:'靜默之泡', ico:'🫧', char:'ebao', color:'var(--bubble-col)'},
+  creative: {name:'創意之靈', ico:'🌈', char:'ebao', color:'var(--creative-col)'},
 };
-const SK_TITLES=['學徒','冒險者','勇士','精英','大師','傳說'];
-function xpForLevel(lv){ return lv*20; }
 const TASK_ICOS = ['📚','🎵','✍️','🧹','📖','🤫','🎨','🏃','🛁','🍱','🧸','⚽','🌿','🎭','🎯','🧩'];
 
 // ═══ STATE ═══
 const S = {
-  coins: { dabo: 0, ebao: 0 },
-  inventory: { dabo: [], ebao: [] },
+  coins: { dabo: 45, ebao: 32 },
+  inventory: { dabo: ['泡泡披風'], ebao: [] },
   equip: {
     dabo: {weapon:null, armor:null, boots:null, art1:null, art2:null, accessory:null},
     ebao: {weapon:null, armor:null, boots:null, art1:null, art2:null, accessory:null},
@@ -862,9 +845,6 @@ const S = {
   taskCounter: 7,
   todayDone: new Set(),   // task IDs completed today
   freeChests: {dabo:0, ebao:0}, // free chest opens earned from equipment
-  skillXP: { dabo:{wind:0,eye:0,craft:0}, ebao:{heart:0,bubble:0,creative:0} },
-  skillLv: { dabo:{wind:1,eye:1,craft:1}, ebao:{heart:1,bubble:1,creative:1} },
-  realRewards: [], // [{id,ico,name,price}] real-life rewards in shop
   get totalItems() {
     return this.inventory.dabo.length + this.inventory.ebao.length +
       Object.values(this.equip.dabo).filter(Boolean).length +
@@ -877,205 +857,7 @@ let _shopChar  = 'dabo';
 let _chestChar = 'dabo';
 
 // ═══ STORAGE ═══
-const SAVE_KEY = 'dungeon_v4';
-
-// ═══ SKILLS RENDER ═══
-function renderSkills(){
-  ['dabo','ebao'].forEach(char=>{
-    const panel=document.getElementById(`sk-panel-${char}`);
-    if(!panel) return;
-    const mySkills=Object.entries(SKILLS).filter(([k,v])=>v.char===char);
-    let h='<div class="card"><div style="display:flex;flex-direction:column;gap:4px">';
-    mySkills.forEach(([key,sk],i)=>{
-      const xp=(S.skillXP[char]||{})[key]||0;
-      const lv=(S.skillLv[char]||{})[key]||1;
-      const needed=xpForLevel(lv);
-      const pct=Math.min(100,Math.round(xp/needed*100));
-      const canLvUp=xp>=needed;
-      const title=SK_TITLES[Math.min(lv-1,SK_TITLES.length-1)];
-      const stars='✦'.repeat(Math.min(lv,4));
-      if(i>0) h+='<div class="divider"></div>';
-      h+=`<div class="sk-row">
-        <div class="bottle-wrap">
-          <div class="fat-bottle"><div class="b-stopper"></div><div class="b-neck2"></div>
-            <div class="b-body2" style="border-color:${sk.hex}44">
-              <div class="b-liquid" style="height:${pct}%;background:linear-gradient(to top,${sk.hex},${sk.hex}BB)"></div>
-              <div class="b-blotch" style="background:${sk.hex}"></div>
-              <div class="b-shine2"></div>
-              <div class="b-stars">${[...stars].map(s=>`<span class="b-star" style="color:#fff">${s}</span>`).join('')}</div>
-            </div>
-          </div>
-          <div class="b-lv" style="background:${sk.hex}">Lv${lv}</div>
-        </div>
-        <div class="sk-info">
-          <div class="sk-name">${sk.ico} ${sk.name}</div>
-          <div class="sk-desc">${sk.desc}</div>
-          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:linear-gradient(to right,${sk.hex},${sk.hex}88)"></div></div>
-          <div class="prog-txt"><span>${xp} ⭐</span><span>距 Lv${lv+1} 差 ${Math.max(0,needed-xp)} ⭐</span></div>
-          ${canLvUp
-            ? `<button class="lvup-btn" onclick="levelUp('${char}','${key}')">🎉 升級！點我！</button>`
-            : `<div class="sk-ttl" style="background:${sk.hex}18;color:${sk.hex};border-color:${sk.hex}44">${sk.ico} Lv${lv} ${title}</div>`
-          }
-        </div>
-      </div>`;
-    });
-    h+='</div></div>';
-    panel.innerHTML=h;
-  });
-}
-
-// ─── level up ───
-function levelUp(char, key){
-  const lv=(S.skillLv[char]||{})[key]||1;
-  const needed=xpForLevel(lv);
-  if((S.skillXP[char]||{})[key]<needed) return;
-  S.skillXP[char][key]-=needed;  // carry leftover XP
-  S.skillLv[char][key]=lv+1;
-  saveState(); renderSkills();
-  showBling(char,key,lv+1);
-}
-
-function showBling(char,key,newLv){
-  const sk=SKILLS[key];
-  document.getElementById('bling-icon').textContent=sk.ico;
-  document.getElementById('bling-title').textContent=`${sk.name} 升級！`;
-  document.getElementById('bling-sub').textContent=`Lv${newLv-1} → Lv${newLv} 🎊`;
-  document.getElementById('ov-bling').classList.remove('hidden');
-  for(let i=0;i<24;i++) setTimeout(()=>spawnSparkle(sk.hex),i*80);
-}
-function closeBling(){ document.getElementById('ov-bling').classList.add('hidden'); }
-
-function spawnSparkle(col){
-  const emojis=['⭐','✨','🌟','💫','⚡','🎊'];
-  const el=document.createElement('span');
-  el.className='sparkle';
-  el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-  const x=Math.random()*window.innerWidth;
-  const y=Math.random()*window.innerHeight;
-  const dx=(Math.random()-0.5)*300+'px';
-  const dy=(Math.random()-0.5)*300+'px';
-  el.style.cssText=`left:${x}px;top:${y}px;--dx:${dx};--dy:${dy}`;
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1300);
-}
-
-
-// ═══ PARENT ADJUST ═══
-let _adjChar='dabo', _adjAmt=1;
-function setAdjChar(c){
-  _adjChar=c;
-  ['dabo','ebao'].forEach(x=>{
-    const b=document.getElementById('adj-'+x); if(b) b.classList.toggle('on',x===c);
-  });
-  updateAdjDisplay();
-}
-function setAdjAmt(n){
-  _adjAmt=n;
-  [1,3,5,10].forEach(x=>{
-    const b=document.getElementById('amt-'+x); if(b) b.classList.toggle('on',x===n);
-  });
-}
-function updateAdjDisplay(){
-  const el=document.getElementById('adj-coin-display');
-  const lbl=document.getElementById('adj-char-lbl');
-  if(el) el.textContent=(S.coins[_adjChar]||0)+' 🪙';
-  if(lbl) lbl.textContent=(_adjChar==='dabo'?'大寶':'二寶')+'的金幣';
-}
-function doAdjCoins(delta){
-  S.coins[_adjChar]=Math.max(0,(S.coins[_adjChar]||0)+delta);
-  updateCoins(); updateAdjDisplay(); saveState();
-  const who=_adjChar==='dabo'?'大寶':'二寶';
-  showToast(`⚙️ ${who} 金幣 ${delta>0?'+':''}${delta} 🪙`);
-}
-
-// ── setParentTab updated to handle adjust ──
-function setParentTab(t){
-  ['tasks','adjust','hist'].forEach(x=>{
-    const btn=document.getElementById('pt-'+x); if(btn) btn.classList.toggle('on',x===t);
-    const panel=document.getElementById('pp-'+x); if(panel) panel.classList.toggle('hidden',x!==t);
-  });
-  if(t==='adjust'){ updateAdjDisplay(); renderRealRewardMgmt(); }
-  if(t==='hist') renderParentHist();
-}
-
-// ═══ REAL REWARDS ═══
-let _rrChar='dabo', _rrEditId=null;
-const RR_ICOS=['🎮','🍦','🍕','🍫','🎬','📺','🎠','🎯','🧸','🎪','🛍️','🏖️','🎉','🍰','🎁'];
-
-function setRealChar(c){
-  _rrChar=c;
-  ['dabo','ebao'].forEach(x=>{
-    const b=document.getElementById('rr-'+x); if(b) b.classList.toggle('on',x===c);
-  });
-  renderRealRewardShop();
-}
-function renderRealRewardShop(){
-  const el=document.getElementById('real-reward-shop-list'); if(!el) return;
-  const rr=S.realRewards||[];
-  // update coin display in buttons
-  const dc=document.getElementById('rr-dabo-coins'); if(dc) dc.textContent=` 🪙${S.coins.dabo}`;
-  const ec=document.getElementById('rr-ebao-coins'); if(ec) ec.textContent=` 🪙${S.coins.ebao}`;
-  if(!rr.length){ el.innerHTML='<div style="text-align:center;color:var(--ink-light);padding:20px;font-size:13px">暫無現實獎勵<br>請家長在「⚙️ 調整」頁面新增</div>'; return; }
-  el.innerHTML=rr.map(r=>{
-    const canBuy=(S.coins[_rrChar]||0)>=r.price;
-    return `<div class="rr-item">
-      <div><div class="rr-name">${r.ico} ${r.name}</div><div class="rr-price">💰 ${r.price} 金幣</div></div>
-      <button class="rr-buy-btn" ${canBuy?'':'disabled style="opacity:.4;cursor:default"'} onclick="buyRealReward(${r.id})">兌換</button>
-    </div>`;
-  }).join('');
-}
-function buyRealReward(id){
-  const r=(S.realRewards||[]).find(x=>x.id===id); if(!r) return;
-  if((S.coins[_rrChar]||0)<r.price){ showToast('金幣不足！'); return; }
-  if(!confirm(`用 ${r.price} 🪙 換「${r.ico} ${r.name}」嗎？`)) return;
-  S.coins[_rrChar]-=r.price;
-  const now=new Date();
-  S.history.unshift({date:`${now.getMonth()+1}/${now.getDate()}`,char:_rrChar,task:`🎁 ${r.name}`,coins:-r.price,ts:Date.now()});
-  updateCoins(); renderRealRewardShop(); saveState();
-  const who=_rrChar==='dabo'?'大寶':'二寶';
-  showToast(`🎁 ${who} 兌換了「${r.name}」！`);
-}
-function renderRealRewardMgmt(){
-  const el=document.getElementById('real-reward-mgmt-list'); if(!el) return;
-  const rr=S.realRewards||[];
-  if(!rr.length){ el.innerHTML='<div style="color:var(--ink-light);font-size:13px;padding:8px 0">還沒有現實獎勵</div>'; return; }
-  el.innerHTML=rr.map(r=>`
-    <div class="rr-item">
-      <div><div class="rr-name">${r.ico} ${r.name}</div><div class="rr-price">💰 ${r.price} 金幣</div></div>
-      <div style="display:flex;gap:6px">
-        <button onclick="openRealRewardForm(${r.id})" style="padding:5px 10px;border:1.5px solid rgba(180,140,80,.25);border-radius:8px;background:transparent;cursor:pointer;font-size:12px">✏️</button>
-        <button onclick="deleteRealReward(${r.id})" style="padding:5px 10px;border:1.5px solid rgba(200,64,64,.25);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;color:#C84040">✕</button>
-      </div>
-    </div>`).join('');
-}
-function deleteRealReward(id){
-  S.realRewards=(S.realRewards||[]).filter(x=>x.id!==id);
-  renderRealRewardMgmt(); saveState();
-}
-let _rrFormIco='🎁';
-function openRealRewardForm(id){
-  _rrEditId=id;
-  const r=id?(S.realRewards||[]).find(x=>x.id===id):null;
-  _rrFormIco=r?r.ico:'🎁';
-  const name=prompt('獎勵名稱：', r?r.name:'');
-  if(!name) return;
-  const priceStr=prompt('需要幾個金幣？', r?r.price:'10');
-  const price=parseInt(priceStr);
-  if(!price||price<1) return;
-  const icoStr=prompt('圖示（emoji）：', _rrFormIco);
-  const ico=icoStr||'🎁';
-  if(r){
-    r.name=name; r.price=price; r.ico=ico;
-  } else {
-    const newId=Date.now();
-    S.realRewards=(S.realRewards||[]);
-    S.realRewards.push({id:newId,ico,name,price});
-  }
-  renderRealRewardMgmt(); saveState();
-}
-
-// setShopChar updated to handle 'real'
-
+const SAVE_KEY = 'dungeon_v1';
 // ═══ FIREBASE 雲端同步 ═══
 const FB_CONFIG = {
   apiKey: "AIzaSyBayPbIWbB5JmARswK5G-CUey6egjvkDhE",
@@ -1107,7 +889,7 @@ function applyCloudState(d){
   // also update localStorage
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify({...d, lastDate: d.lastDate||new Date().toDateString()})); }catch(e){}
   // re-render
-  renderShop(); renderTasks(); renderTodayList(); updateCoins(); updateChestBadge(); renderSkills();
+  renderShop(); renderTasks(); renderTodayList(); updateCoins(); updateChestBadge();
 }
 
 async function saveToCloud(){
@@ -1152,9 +934,6 @@ function saveState(){
       todayDone:   [...S.todayDone],
       freeChests:  S.freeChests,
       customItems: S.customItems||[],
-      skillXP:     S.skillXP,
-      skillLv:     S.skillLv,
-      realRewards: S.realRewards||[],
       pin:         _parentPin,
       lastDate:    new Date().toDateString(),
     }));
@@ -1175,9 +954,6 @@ function loadState(){
     if(d.todayDone)   S.todayDone   = new Set(d.todayDone);
     if(d.freeChests)  S.freeChests  = d.freeChests;
     if(d.customItems) S.customItems = d.customItems;
-    if(d.skillXP)     S.skillXP     = d.skillXP;
-    if(d.skillLv)     S.skillLv     = d.skillLv;
-    if(d.realRewards) S.realRewards = d.realRewards;
     if(d.pin)         _parentPin    = d.pin;
     // check new day
     if(d.lastDate && d.lastDate !== new Date().toDateString()) return 'newday';
@@ -1227,13 +1003,7 @@ function setTkTab(t){['dabo','ebao'].forEach(x=>{document.getElementById('tk-'+x
 function setSkTab(t){['dabo','ebao'].forEach(x=>{document.getElementById('sk-'+x).classList.toggle('on',x===t);document.getElementById('sk-panel-'+x).classList.toggle('hidden',x!==t)})}
 function setShopChar(c){
   _shopChar=c;
-  ['dabo','ebao','real'].forEach(x=>{const b=document.getElementById('sh-'+x);if(b)b.classList.toggle('on',x===c);});
-  const isReal=c==='real';
-  const normalPanel=document.getElementById('shop-normal-panel');
-  const realPanel=document.getElementById('shop-real-panel');
-  if(normalPanel) normalPanel.classList.toggle('hidden',isReal);
-  if(realPanel)   realPanel.classList.toggle('hidden',!isReal);
-  if(isReal){ renderRealRewardShop(); return; }
+  ['dabo','ebao'].forEach(x=>document.getElementById('sh-'+x).classList.toggle('on',x===c));
   document.getElementById('shop-char-lbl').textContent=c==='dabo'?'大寶的金幣':'二寶的金幣';
   updateCoins(); renderShop();
 }
@@ -1569,19 +1339,11 @@ function confirmAward(){
   S.todayDone.add(_aTaskId);
   const now=new Date();
   S.history.unshift({date:`${now.getMonth()+1}/${now.getDate()}`,char:_aTgt,task:_aTaskName,coins:total,ts:Date.now()});
-  // add skill XP (same as coins earned)
-  if(_aTaskSkill && S.skillXP[_aTgt] && S.skillXP[_aTgt][_aTaskSkill]!==undefined){
-    S.skillXP[_aTgt][_aTaskSkill] += total;
-    const lv=(S.skillLv[_aTgt]||{})[_aTaskSkill]||1;
-    if(S.skillXP[_aTgt][_aTaskSkill]>=xpForLevel(lv)){
-      setTimeout(()=>showToast('✨ 技能可以升級了！去技能頁面看看'),800);
-    }
-  }
-  updateCoins(); renderTodayList(); renderSkills(); saveState();
+  updateCoins(); renderTodayList(); saveState();
   for(let i=0;i<Math.min(total,8);i++) setTimeout(()=>spawnCoin(),i*130);
   const who=_aTgt==='dabo'?'大寶':'二寶';
   const bonusTxt=_pendingBonuses.length?` (裝備加成 +${_pendingBonuses.reduce((s,b)=>s+b.coins,0)} 🪙)`:'';
-  showToast(`✦ ${who} +${total} 🪙  +${total} ⭐${bonusTxt}`);
+  showToast(`✦ ${who} +${total} 🪙${bonusTxt}`);
 }
 
 function closeAward(){document.getElementById('ov-award').classList.add('hidden')}
@@ -1724,7 +1486,14 @@ function resetToday(){
   });
 }
 
-// ═══ PARENT TAB ═══ (see new version above)
+// ═══ PARENT TAB ═══
+function setParentTab(t){
+  ['tasks','hist'].forEach(x=>{
+    document.getElementById('pt-'+x).classList.toggle('on',x===t);
+    document.getElementById('pp-'+x).classList.toggle('hidden',x!==t);
+  });
+  if(t==='hist') renderParentHist();
+}
 function setParentTaskChar(c){
   _parentTaskChar=c;
   ['dabo','ebao'].forEach(x=>document.getElementById('ptt-'+x).classList.toggle('on',x===c));
@@ -1871,7 +1640,6 @@ renderTasks();
 renderTodayList();
 updateCoins();
 updateChestBadge();
-renderSkills();
 if(_loadResult==='newday') setTimeout(()=>checkNewDay(_loadResult), 600);
 </script>
 <script>
